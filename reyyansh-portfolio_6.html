@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reyyansh Bothra — CS @ UIUC</title>
+<meta name="description" content="Reyyansh Bothra — incoming Computer Science freshman at UIUC Grainger Engineering. AI/ML, research, and software projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* dark theme (default) */
+  --bg:#1b1d21;
+  --bg-soft:#24262b;
+  --card:#222429;
+  --ink:#e9ebee;
+  --ink-2:#a8adb6;
+  --ink-3:#7c828c;
+  --line:#33363c;
+  --accent:#ff5f05;        /* Illini orange — used sparingly */
+  --accent-soft:#ff5f0518;
+  --ghost:#25282d;
+  --shadow:rgba(0,0,0,.5);
+  --max:760px;
+  --rail:300px;
+}
+
+html[data-theme="light"]{
+  /* desert / beige light theme */
+  --bg:#ece2cc;
+  --bg-soft:#e2d6ba;
+  --card:#f7f0de;
+  --ink:#2b2418;
+  --ink-2:#5d5340;
+  --ink-3:#988b6c;
+  --line:#d6c8a8;
+  --accent-soft:#ff5f0516;
+  --ghost:#ded2b4;
+  --shadow:rgba(92,70,35,.25);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+body{
+  background:var(--bg); color:var(--ink);
+  transition:background .3s ease, color .3s ease;
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:16px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent); color:#fff}
+a{color:inherit; text-decoration:none}
+
+/* ---------- crosshair grid marks (engineering-drawing motif) ---------- */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(circle, var(--line) 1px, transparent 1px);
+  background-size:56px 56px;
+  opacity:.35;
+  mask-image:linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+}
+
+
+.rail-top{display:flex; align-items:flex-start; justify-content:space-between; gap:12px}
+#themeToggle{
+  flex:none; width:36px; height:36px; border-radius:10px; cursor:pointer;
+  border:1px solid var(--line); background:var(--card); color:var(--ink-2);
+  display:flex; align-items:center; justify-content:center; transition:.18s;
+}
+#themeToggle:hover{color:var(--accent); border-color:var(--accent)}
+#themeToggle:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+html[data-theme="light"] #themeToggle .ic-sun{display:none}
+html:not([data-theme="light"]) #themeToggle .ic-moon{display:none}
+
+/* ============ LEFT RAIL ============ */
+.rail{
+  position:fixed; top:0; left:0; bottom:0; width:var(--rail);
+  padding:56px 40px; border-right:1px solid var(--line);
+  display:flex; flex-direction:column; z-index:5; background:var(--bg);
+}
+.rail .brand{font-family:'Archivo',sans-serif; font-weight:800; font-size:26px;
+  letter-spacing:-.02em; line-height:1.15}
+.rail .brand a:hover{color:var(--accent)}
+.rail .role{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-2);
+  margin-top:10px; line-height:1.6}
+.rail .role .uiuc{color:var(--accent)}
+.status{
+  display:inline-flex; align-items:center; gap:9px; margin-top:22px;
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.04em;
+  color:var(--ink-2); border:1px solid var(--line); border-radius:100px;
+  padding:7px 14px; background:var(--card); width:fit-content;
+}
+.status .dot{width:7px; height:7px; border-radius:50%; background:#2fad54; position:relative}
+.status .dot::after{content:""; position:absolute; inset:-3px; border-radius:50%;
+  border:1px solid #2fad54; opacity:.35; animation:pulse 2s infinite}
+@keyframes pulse{ 0%{transform:scale(.6);opacity:.7} 100%{transform:scale(1.6);opacity:0} }
+@media (prefers-reduced-motion:reduce){ .status .dot::after{animation:none} }
+
+nav.index{margin-top:56px; display:flex; flex-direction:column; gap:2px}
+nav.index a{
+  display:flex; align-items:baseline; gap:14px;
+  font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-3);
+  padding:7px 10px; border-radius:6px; transition:color .18s, background .18s;
+}
+nav.index a .n{font-size:11px; letter-spacing:.06em}
+nav.index a .bar{flex:0 0 0px; height:1px; background:var(--accent); transition:flex-basis .25s ease}
+nav.index a:hover{color:var(--ink)}
+nav.index a.active{color:var(--ink); background:var(--bg-soft)}
+nav.index a.active .n{color:var(--accent)}
+nav.index a.active .bar{flex-basis:22px}
+
+.rail .foot{margin-top:auto; font-family:'IBM Plex Mono',monospace; font-size:11px;
+  color:var(--ink-3); line-height:1.9}
+.rail .foot a:hover{color:var(--accent)}
+
+/* ============ MAIN ============ */
+main{margin-left:var(--rail); position:relative; z-index:1}
+.wrap{max-width:var(--max); margin:0 auto; padding:0 56px}
+
+/* sections */
+section{padding:76px 0 8px; border-top:1px solid var(--line); margin-top:70px; position:relative}
+section:first-of-type{border-top:none; margin-top:0; padding-top:120px}
+.sec-head{display:flex; align-items:baseline; gap:18px; margin-bottom:44px; position:relative}
+.sec-head h2{font-family:'Archivo',sans-serif; font-weight:700; font-size:15px;
+  letter-spacing:.22em; text-transform:uppercase}
+.sec-head .ghost{
+  position:absolute; right:-10px; top:-58px;
+  font-family:'Archivo',sans-serif; font-weight:800; font-size:150px; line-height:1;
+  color:var(--ghost); letter-spacing:-.04em; user-select:none; pointer-events:none; z-index:-1;
+}
+
+/* about */
+.about p{font-size:17.5px; color:var(--ink-2); max-width:58ch}
+.about p + p{margin-top:18px}
+.about a{color:var(--ink); border-bottom:1px solid var(--line); transition:.18s}
+.about a:hover{color:var(--accent); border-color:var(--accent)}
+
+/* timeline rows (education) */
+.row{
+  display:grid; grid-template-columns:150px 1fr; gap:26px;
+  padding:26px 0; border-bottom:1px solid var(--line);
+}
+.row:last-child{border-bottom:none}
+.row .when{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-3); padding-top:3px}
+.row h3{font-family:'Archivo',sans-serif; font-weight:600; font-size:19px; letter-spacing:-.01em}
+.row .org{color:var(--ink-2); font-size:15px; margin-top:4px}
+.row .note{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-3); margin-top:10px}
+.row .note em{font-style:normal; color:var(--accent)}
+
+/* experience cards */
+.xp{display:flex; flex-direction:column}
+.xp-item{
+  padding:28px 22px; margin:0 -22px; border-radius:14px;
+  transition:background .2s;
+  border-bottom:1px solid var(--line);
+}
+.xp-item:last-child{border-bottom:none}
+.xp-item:hover{background:var(--card); box-shadow:0 1px 0 var(--line), 0 10px 30px -18px var(--shadow)}
+.xp-item .top{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap}
+.xp-item h3{font-family:'Archivo',sans-serif; font-weight:600; font-size:19px}
+.xp-item .org{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-3)}
+.xp-item p{margin-top:12px; color:var(--ink-2); font-size:15.5px; max-width:60ch}
+.xp-more{margin-top:34px}
+.xp-more .label{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:16px}
+.chips{display:flex; flex-wrap:wrap; gap:10px}
+.chip{
+  font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-2);
+  border:1px solid var(--line); background:var(--card); border-radius:100px; padding:8px 16px;
+  transition:.18s;
+}
+.chip b{font-weight:500; color:var(--ink)}
+.chip:hover{border-color:var(--accent); color:var(--ink)}
+
+/* research feature */
+.research-grid{display:flex; flex-direction:column; gap:18px}
+.research-card{
+  display:block;
+  border:1px solid var(--line); border-radius:16px; background:var(--card);
+  padding:30px 32px; position:relative; overflow:hidden;
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s;
+}
+.research-card:hover{transform:translateY(-3px); border-color:var(--ink-3);
+  box-shadow:0 16px 40px -24px var(--shadow)}
+.research-card .arrow{color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:16px;
+  opacity:0; transform:translateX(-4px); transition:.2s; display:inline-block}
+.research-card:hover .arrow{opacity:1; transform:none}
+.research-card .stack{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-3); margin-top:16px}
+.research-card .tag{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent)}
+.research-card h3{font-family:'Archivo',sans-serif; font-weight:700; font-size:20px;
+  letter-spacing:-.015em; margin-top:10px}
+.research-card p{margin-top:14px; color:var(--ink-2); font-size:15.5px}
+
+/* projects */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+.proj{
+  border:1px solid var(--line); border-radius:16px; background:var(--card);
+  padding:26px 26px 24px; display:flex; flex-direction:column; gap:12px;
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s;
+}
+.proj:hover{transform:translateY(-3px); border-color:var(--ink-3);
+  box-shadow:0 16px 40px -24px var(--shadow)}
+.proj .num{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-3); letter-spacing:.1em}
+.proj h3{font-family:'Archivo',sans-serif; font-weight:600; font-size:19px; display:flex; align-items:center; gap:10px}
+.proj h3 .arrow{color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:15px;
+  opacity:0; transform:translateX(-4px); transition:.2s}
+.proj:hover h3 .arrow{opacity:1; transform:none}
+.proj p{color:var(--ink-2); font-size:14.5px; flex:1}
+.proj .stack{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-3)}
+.proj.featured{grid-column:1 / -1;}
+
+/* contact */
+.contact-links{display:flex; flex-direction:column; border-top:1px solid var(--line)}
+.contact-links a{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:22px 4px; border-bottom:1px solid var(--line);
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:clamp(19px,2.6vw,26px);
+  letter-spacing:-.015em; transition:padding-left .22s, color .18s;
+}
+.contact-links a .kind{font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:12px;
+  color:var(--ink-3); letter-spacing:.1em; text-transform:uppercase}
+.contact-links a:hover{color:var(--accent); padding-left:14px}
+
+footer{padding:64px 0 56px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-3);
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+/* reveal on scroll */
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease}
+.reveal.in{opacity:1; transform:none}
+@media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none; transition:none} }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1020px){
+  section:first-of-type{padding-top:64px}
+  .rail{position:static; width:auto; border-right:none; border-bottom:1px solid var(--line);
+    padding:34px 28px 26px; }
+  nav.index{flex-direction:row; flex-wrap:wrap; margin-top:26px; gap:4px}
+  nav.index a .bar{display:none}
+  .rail .foot{display:none}
+  main{margin-left:0}
+  .wrap{padding:0 28px}
+    .sec-head .ghost{font-size:110px; top:-40px}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr; gap:6px}
+  .xp-item{margin:0; padding:24px 0; border-radius:0}
+  .xp-item:hover{background:transparent; box-shadow:none}
+  .sec-head .ghost{display:none}
+}
+</style>
+</head>
+<body>
+
+<aside class="rail">
+  <div class="rail-top">
+    <div class="brand"><a href="#top">Reyyansh<br>Bothra</a></div>
+    <button id="themeToggle" aria-label="Toggle light / dark theme" title="Toggle theme">
+      <svg class="ic-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="ic-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+  <div class="role">incoming cs freshman<br>@ <span class="uiuc">uiuc</span> · grainger engineering</div>
+  <div class="status"><span class="dot"></span> open to research &amp; internships</div>
+
+  <nav class="index" aria-label="Sections">
+    <a href="#about"><span class="n">00</span> about <span class="bar"></span></a>
+    <a href="#education"><span class="n">01</span> education <span class="bar"></span></a>
+    <a href="#experience"><span class="n">02</span> experience <span class="bar"></span></a>
+    <a href="#research"><span class="n">03</span> research <span class="bar"></span></a>
+    <a href="#projects"><span class="n">04</span> projects <span class="bar"></span></a>
+    <a href="#contact"><span class="n">05</span> contact <span class="bar"></span></a>
+  </nav>
+
+  <div class="foot">
+    <a href="mailto:reyyanshbothra@gmail.com">reyyanshbothra@gmail.com</a><br>
+    <a href="https://github.com/ReyyanshBothra" target="_blank" rel="noopener">github.com/ReyyanshBothra</a><br><br>
+    kolkata, in → urbana, il
+  </div>
+</aside>
+
+<main id="top">
+  <div class="wrap">
+
+    
+
+    <!-- 00 ABOUT -->
+    <section id="about" class="about">
+      <div class="sec-head"><h2>About</h2><span class="ghost" aria-hidden="true">00</span></div>
+      <div class="reveal">
+        <p>I'm an incoming freshman at the <a href="https://cs.illinois.edu/" target="_blank" rel="noopener">Grainger College of Engineering, UIUC</a>, pursuing a B.S. in Computer Science. I'm passionate about building impactful software and exploring research at the intersection of AI and real-world problems.</p>
+        <p>I've interned in AI/ML in a production industrial setting, conducted research in multimodal video generation, and built products used by real people — from art-conservation tooling to productivity apps.</p>
+      </div>
+    </section>
+
+    <!-- 01 EDUCATION -->
+    <section id="education">
+      <div class="sec-head"><h2>Education</h2><span class="ghost" aria-hidden="true">01</span></div>
+      <div class="reveal">
+        <div class="row">
+          <div class="when">2026 — 2030</div>
+          <div>
+            <h3>B.S. Computer Science</h3>
+            <div class="org">University of Illinois at Urbana-Champaign · Grainger College of Engineering</div>
+            <div class="note"><em>incoming freshman</em></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="when">— 2026</div>
+          <div>
+            <h3>Class XII (ISC) · 98.25%</h3>
+            <div class="org">La Martiniere For Boys, Kolkata</div>
+            <div class="note">science stream · indian school certificate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 EXPERIENCE -->
+    <section id="experience">
+      <div class="sec-head"><h2>Experience</h2><span class="ghost" aria-hidden="true">02</span></div>
+      <div class="xp reveal">
+        <div class="xp-item">
+          <div class="top"><h3>AI/ML Intern</h3><span class="org">Rashmi Metalliks</span></div>
+          <p>Worked on AI and machine learning solutions in a production industrial environment. Applied ML techniques to real-world data and contributed to automation and intelligent decision-making pipelines.</p>
+        </div>
+        <div class="xp-item">
+          <div class="top"><h3>Volunteer Educator</h3><span class="org">TribesForGood</span></div>
+          <p>Taught AI and prompt engineering to underprivileged children — making cutting-edge technology accessible and understandable to the next generation, regardless of socioeconomic background.</p>
+        </div>
+      </div>
+      <div class="xp-more reveal">
+        <div class="label">also — la martiniere for boys, kolkata</div>
+        <div class="chips">
+          <span class="chip"><b>Science Club</b> · physics dept.</span>
+          <span class="chip"><b>Computer Club</b></span>
+          <span class="chip"><b>Varsity Football</b></span>
+          <span class="chip"><b>2× Event Leader</b> · paintronage 3.0, leo club</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 RESEARCH -->
+    <section id="research">
+      <div class="sec-head"><h2>Research</h2><span class="ghost" aria-hidden="true">03</span></div>
+      <div class="research-grid reveal">
+        <a class="research-card" href="multimodal-video-generation.pdf" target="_blank" rel="noopener">
+          <div class="tag">multimodal ai · 2026</div>
+          <h3>Orchestrating Multimodal Pipelines for Automated AI Video Generation <span class="arrow">↗</span></h3>
+          <p>A systems-level study of an LLM-orchestrated, six-stage video generation pipeline evaluated across 30 short-form briefs. Staged orchestration raised mean quality scores from 2.7 to 4.1 versus single-pass generation, and a CLIP-based validation loop cut prompt-misalignment failures from 47% to 20%.</p>
+          <div class="stack">read the paper (pdf)</div>
+        </a>
+        <a class="research-card" href="chess-rating-analysis.pdf" target="_blank" rel="noopener">
+          <div class="tag">data analysis · 2026</div>
+          <h3>Rating, Color, and Opening Choice: An Empirical Analysis of 15,467 Rated Chess Games <span class="arrow">↗</span></h3>
+          <p>An empirical study of rated online chess games testing how opening choice, Elo predictions, and White's first-move advantage behave at amateur level — finding 42-point win-rate spreads across openings at club level and a first-move edge that vanishes above 2000.</p>
+          <div class="stack">read the paper (pdf)</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 04 PROJECTS -->
+    <section id="projects">
+      <div class="sec-head"><h2>Projects</h2><span class="ghost" aria-hidden="true">04</span></div>
+      <div class="grid reveal">
+        <div class="proj featured">
+          <div class="num">04.1 — featured</div>
+          <h3>HeritageHeirloom <span class="arrow">↗</span></h3>
+          <p>An AI-powered art conservation platform that generates precise, document-grounded restoration plans for museum curators, private collectors, and conservation professionals.</p>
+          <div class="stack">ai · retrieval · document grounding</div>
+        </div>
+        <div class="proj">
+          <div class="num">04.2</div>
+          <h3>Smart Task Manager <span class="arrow">↗</span></h3>
+          <p>A productivity app with AI-powered task prioritization, deadline tracking, and smart reminders. Built with a focus on clean UX and offline-first functionality.</p>
+          <div class="stack">productivity · offline-first</div>
+        </div>
+        <div class="proj">
+          <div class="num">04.3</div>
+          <h3>MediMind <span class="arrow">↗</span></h3>
+          <p>A meditation app designed to help users build a consistent mindfulness practice through guided sessions, breathing exercises, and mood tracking.</p>
+          <div class="stack">wellness · mobile</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 CONTACT -->
+    <section id="contact">
+      <div class="sec-head"><h2>Contact</h2><span class="ghost" aria-hidden="true">05</span></div>
+      <div class="contact-links reveal">
+        <a href="mailto:reyyanshbothra@gmail.com"><span>reyyanshbothra@gmail.com</span><span class="kind">personal</span></a>
+        <a href="mailto:rbothra3@illinois.edu"><span>rbothra3@illinois.edu</span><span class="kind">university</span></a>
+        <a href="https://github.com/ReyyanshBothra" target="_blank" rel="noopener"><span>github.com/ReyyanshBothra</span><span class="kind">github ↗</span></a>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 Reyyansh Bothra</span>
+      <span>urbana-champaign · kolkata</span>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+(function(){
+  // theme toggle — dark by default
+  const root = document.documentElement;
+  document.getElementById('themeToggle').addEventListener('click', ()=>{
+    root.dataset.theme = (root.dataset.theme === 'light') ? '' : 'light';
+  });
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    for(const e of entries){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // active nav highlight
+  const links = [...document.querySelectorAll('nav.index a')];
+  const secs = links.map(a=>document.querySelector(a.getAttribute('href')));
+  const spy = new IntersectionObserver((entries)=>{
+    for(const e of entries){
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.toggle('active', l.getAttribute('href')==='#'+e.target.id));
+      }
+    }
+  }, {rootMargin:'-30% 0px -55% 0px'});
+  secs.forEach(s=>s&&spy.observe(s));
+})();
+</script>
+</body>
+</html>
